@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
 	  if (true) {
@@ -151,7 +151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function Gif() {
 	      _classCallCheck(this, Gif);
 
-	      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Gif).call(this));
+	      var _this = _possibleConstructorReturn(this, (Gif.__proto__ || Object.getPrototypeOf(Gif)).call(this));
 
 	      _this.start = function () {
 	        var gifLength = 10 * _this.state.length / _this.props.speed;
@@ -179,20 +179,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 
 	      _this.renderFrames = function () {
-	        var frameStyle = {
+	        var frameStyle = _extends({
 	          position: 'absolute',
 	          top: 0,
 	          left: 0,
 	          WebkitTransform: 'translateZ(0)',
 	          msTransform: 'translateZ(0)',
 	          transform: 'translateZ(0)'
-	        };
+	        }, _this.props.frameStyle);
 
 	        return _this.state.frames.map(function (frame, index) {
 	          var opacity = _this.state.currentFrame >= index ? 1 : 0;
 	          var position = index === 0 ? 'static' : frameStyle.position;
 	          var style = _extends({}, frameStyle, { opacity: opacity, position: position });
-
 	          return _react2.default.createElement('img', { key: index, src: frame.url, className: 'frame', style: style });
 	        });
 	      };
@@ -289,10 +288,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	      key: 'render',
 	      value: function render() {
-	        var framesStyle = {
+	        var framesStyle = _extends({
 	          display: 'block',
 	          position: 'relative'
-	        };
+	        }, this.props.framesStyle);
 
 	        return _react2.default.createElement(
 	          'div',
@@ -321,24 +320,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	    reverse: _react.PropTypes.bool,
 	    speed: _react.PropTypes.oneOfType([_react.PropTypes.number, _react.PropTypes.string]).isRequired,
 	    src: _react.PropTypes.string.isRequired,
-	    times: _react.PropTypes.number
+	    times: _react.PropTypes.number,
+	    frameStyle: _react.PropTypes.shape(),
+	    framesStyle: _react.PropTypes.shape()
 	  };
 	  exports.default = Gif;
 	});
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	(function webpackUniversalModuleDefinition(root, factory) {
 		if (( false ? 'undefined' : _typeof(exports)) === 'object' && ( false ? 'undefined' : _typeof(module)) === 'object') module.exports = factory();else if (true) !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') exports["Exploder"] = factory();else root["Exploder"] = factory();
@@ -509,61 +510,61 @@ return /******/ (function(modules) { // webpackBootstrap
 										}
 										streamReader.skipBytes(1); //NULL terminator
 									} else if (streamReader.isNext([0x2c])) {
-											streamReader.log("IMAGE DESCRIPTOR!");
-											if (!expectingImage) {
-												// This is a bare image, not prefaced with a Graphics Control Extension
-												// so we should treat it as a frame.
-												frames.push({ index: streamReader.index, delay: 0 });
-											}
-											expectingImage = false;
+										streamReader.log("IMAGE DESCRIPTOR!");
+										if (!expectingImage) {
+											// This is a bare image, not prefaced with a Graphics Control Extension
+											// so we should treat it as a frame.
+											frames.push({ index: streamReader.index, delay: 0 });
+										}
+										expectingImage = false;
 
-											streamReader.skipBytes(9);
-											if (streamReader.peekBit(1)) {
-												streamReader.log("LOCAL COLOR TABLE");
-												var colorTableSize = streamReader.readByte() & 0x07;
-												streamReader.log("LOCAL COLOR TABLE IS " + 3 * Math.pow(2, colorTableSize + 1) + " BYTES");
-												streamReader.skipBytes(3 * Math.pow(2, colorTableSize + 1));
-											} else {
-												streamReader.log("NO LOCAL TABLE PHEW");
-												streamReader.skipBytes(1);
-											}
+										streamReader.skipBytes(9);
+										if (streamReader.peekBit(1)) {
+											streamReader.log("LOCAL COLOR TABLE");
+											var colorTableSize = streamReader.readByte() & 0x07;
+											streamReader.log("LOCAL COLOR TABLE IS " + 3 * Math.pow(2, colorTableSize + 1) + " BYTES");
+											streamReader.skipBytes(3 * Math.pow(2, colorTableSize + 1));
+										} else {
+											streamReader.log("NO LOCAL TABLE PHEW");
+											streamReader.skipBytes(1);
+										}
 
-											streamReader.log("MIN CODE SIZE " + streamReader.readByte());
-											streamReader.log("DATA START");
+										streamReader.log("MIN CODE SIZE " + streamReader.readByte());
+										streamReader.log("DATA START");
 
-											while (!streamReader.isNext([0x00])) {
-												var blockSize = streamReader.readByte();
-												//        streamReader.log("SKIPPING " + blockSize + " BYTES");
-												streamReader.skipBytes(blockSize);
-											}
-											streamReader.log("DATA END");
-											streamReader.skipBytes(1); //NULL terminator
-										} else if (streamReader.isNext([0x21, 0xF9, 0x04])) {
-												streamReader.log("GRAPHICS CONTROL EXTENSION!");
-												// We _definitely_ have a frame. Now we're expecting an image
-												var index = streamReader.index;
+										while (!streamReader.isNext([0x00])) {
+											var blockSize = streamReader.readByte();
+											//        streamReader.log("SKIPPING " + blockSize + " BYTES");
+											streamReader.skipBytes(blockSize);
+										}
+										streamReader.log("DATA END");
+										streamReader.skipBytes(1); //NULL terminator
+									} else if (streamReader.isNext([0x21, 0xF9, 0x04])) {
+										streamReader.log("GRAPHICS CONTROL EXTENSION!");
+										// We _definitely_ have a frame. Now we're expecting an image
+										var index = streamReader.index;
 
-												streamReader.skipBytes(3);
-												var disposalMethod = streamReader.readByte() >> 2;
-												streamReader.log("DISPOSAL " + disposalMethod);
-												var delay = streamReader.readByte() + streamReader.readByte() * 256;
-												frames.push({ index: index, delay: delay, disposal: disposalMethod });
-												streamReader.log("FRAME DELAY " + delay);
-												streamReader.skipBytes(2);
-												expectingImage = true;
-											} else {
-												var maybeTheEnd = streamReader.index;
-												while (!streamReader.finished() && !streamReader.isNext([0x21, 0xF9, 0x04])) {
-													streamReader.readByte();
-												}
-												if (streamReader.finished()) {
-													streamReader.index = maybeTheEnd;
-													streamReader.log("WE END");
-													spinning = false;
-												} else {
-													streamReader.log("UNKNOWN DATA FROM " + maybeTheEnd);
-												}
-											}
+										streamReader.skipBytes(3);
+										var disposalMethod = streamReader.readByte() >> 2;
+										streamReader.log("DISPOSAL " + disposalMethod);
+										var delay = streamReader.readByte() + streamReader.readByte() * 256;
+										frames.push({ index: index, delay: delay, disposal: disposalMethod });
+										streamReader.log("FRAME DELAY " + delay);
+										streamReader.skipBytes(2);
+										expectingImage = true;
+									} else {
+										var maybeTheEnd = streamReader.index;
+										while (!streamReader.finished() && !streamReader.isNext([0x21, 0xF9, 0x04])) {
+											streamReader.readByte();
+										}
+										if (streamReader.finished()) {
+											streamReader.index = maybeTheEnd;
+											streamReader.log("WE END");
+											spinning = false;
+										} else {
+											streamReader.log("UNKNOWN DATA FROM " + maybeTheEnd);
+										}
+									}
 								}
 								var endOfFrames = streamReader.index;
 
@@ -789,9 +790,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
 		if (true) {
@@ -820,7 +821,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		};
 	});
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
