@@ -22,7 +22,9 @@ class Gif extends Component {
       PropTypes.string
     ]).isRequired,
     src: PropTypes.string.isRequired,
-    times: PropTypes.number
+    times: PropTypes.number,
+    frameStyle: PropTypes.shape(),
+    framesStyle: PropTypes.shape(),
   };
 
   constructor() {
@@ -138,14 +140,14 @@ class Gif extends Component {
       left: 0,
       WebkitTransform: 'translateZ(0)',
       msTransform: 'translateZ(0)',
-      transform: 'translateZ(0)'
+      transform: 'translateZ(0)',
+      ...this.props.frameStyle,
     };
 
     return this.state.frames.map((frame, index) => {
       const opacity = this.state.currentFrame >= index ? 1 : 0;
       const position = index === 0 ? 'static' : frameStyle.position;
       const style = { ...frameStyle, opacity, position };
-
       return <img key={index} src={frame.url} className='frame' style={style} />
     });
   }
@@ -153,7 +155,8 @@ class Gif extends Component {
   render() {
     const framesStyle = {
       display: 'block',
-      position: 'relative'
+      position: 'relative',
+      ...this.props.framesStyle,
     };
 
     return <div className='frames' style={framesStyle}>{this.renderFrames()}</div>;
